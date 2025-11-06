@@ -1,5 +1,6 @@
 import { Change, BatchConfig } from '../types/document'
 import { saveDocumentChanges } from '../api/documents'
+import { detectChange } from './diffDetection'
 
 export const BATCH_CONFIG: BatchConfig = {
   maxWaitMs: 2000,
@@ -133,11 +134,13 @@ export class ChangeBuffer {
 
     if (!this.hasUnflushedChanges) return
     
-    // Calculate single change from last saved to current
-    const change: Change = {
-      operation: 'replace',
-      range: { start: 0, end: this.lastSavedContent.length },
-      text: this.currentEditorContent,
+    // Detect the actual change (delta) between last saved and current
+    const change = detectChange(this.lastSavedContent, this.currentEditorContent)
+    
+    // If no change detected, nothing to save
+    if (!change) {
+      this.hasUnflushedChanges = false
+      return
     }
 
     this.isFlushInProgress = true
