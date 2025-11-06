@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@layer components {
+  /* TipTap ProseMirror custom styles */
+  .ProseMirror {
+    @apply outline-none;
+  }
+
+  .ProseMirror h1 {
+    @apply text-4xl font-bold leading-tight my-6 text-gray-900;
+  }
+
+  .ProseMirror h2 {
+    @apply text-3xl font-semibold leading-snug my-5 text-gray-900;
+  }
+
+  .ProseMirror h3 {
+    @apply text-2xl font-semibold leading-normal my-4 text-gray-900;
+  }
+
+  .ProseMirror p {
+    @apply text-lg leading-relaxed my-3 text-gray-800;
+  }
+
+  .ProseMirror ul,
+  .ProseMirror ol {
+    @apply pl-6 my-3;
+  }
+
+  .ProseMirror li {
+    @apply text-lg leading-relaxed my-1 text-gray-800;
+  }
+
+  .ProseMirror code {
+    @apply bg-gray-100 px-1.5 py-0.5 rounded font-mono text-sm text-red-600;
+  }
+
+  .ProseMirror pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg my-4 overflow-x-auto;
+  }
+
+  .ProseMirror pre code {
+    @apply bg-transparent text-inherit p-0 text-sm;
+  }
+
+  .ProseMirror blockquote {
+    @apply border-l-4 border-gray-300 pl-4 my-4 text-gray-600 italic;
+  }
+
+  .ProseMirror hr {
+    @apply border-0 border-t-2 border-gray-300 my-8;
+  }
+
+  .ProseMirror strong {
+    @apply font-bold;
+  }
+
+  .ProseMirror em {
+    @apply italic;
+  }
+
+  .ProseMirror a {
+    @apply text-blue-500 underline cursor-pointer hover:text-blue-700;
+  }
+
+  /* Placeholder */
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply float-left text-gray-400 pointer-events-none h-0;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .ProseMirror h1 {
+      @apply text-3xl;
+    }
+
+    .ProseMirror h2 {
+      @apply text-2xl;
+    }
+
+    .ProseMirror h3 {
+      @apply text-xl;
+    }
+
+    .ProseMirror p,
+    .ProseMirror li {
+      @apply text-base;
+    }
+  }
+}

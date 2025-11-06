@@ -1,0 +1,554 @@
+{
+  "info": {
+    "name": "Sandstone API",
+    "description": "Complete API collection for Sandstone document editing application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "sandstone-api-v1"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5001/api",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Create Document",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('documentId', response.id);",
+                  "    pm.test('Document created successfully', function() {",
+                  "        pm.expect(response).to.have.property('id');",
+                  "        pm.expect(response).to.have.property('title');",
+                  "        pm.expect(response).to.have.property('content');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My New Document\",\n  \"content\": \"This is the initial content of my document.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            },
+            "description": "Create a new document with title and content"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            },
+            "description": "Retrieve all documents with recent changes"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Retrieve a specific document with all its changes"
+          },
+          "response": []
+        },
+        {
+          "name": "Apply Changes (Patch) - Insert",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": [\n    {\n      \"operation\": \"insert\",\n      \"range\": { \"start\": 0, \"end\": 0 },\n      \"text\": \"NEW: \"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Insert text at a specific position"
+          },
+          "response": []
+        },
+        {
+          "name": "Apply Changes (Patch) - Delete",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": [\n    {\n      \"operation\": \"delete\",\n      \"range\": { \"start\": 0, \"end\": 5 },\n      \"text\": \"\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Delete text in a specific range"
+          },
+          "response": []
+        },
+        {
+          "name": "Apply Changes (Patch) - Replace",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": [\n    {\n      \"operation\": \"replace\",\n      \"range\": { \"start\": 10, \"end\": 20 },\n      \"text\": \"replacement text\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Replace text in a specific range"
+          },
+          "response": []
+        },
+        {
+          "name": "Apply Multiple Changes",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": [\n    {\n      \"operation\": \"insert\",\n      \"range\": { \"start\": 0, \"end\": 0 },\n      \"text\": \"Title: \"\n    },\n    {\n      \"operation\": \"replace\",\n      \"range\": { \"start\": 20, \"end\": 30 },\n      \"text\": \"updated\"\n    },\n    {\n      \"operation\": \"delete\",\n      \"range\": { \"start\": 50, \"end\": 60 },\n      \"text\": \"\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Apply multiple changes in a single batch"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Delete a document permanently"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Search Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/search?q=keyword",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "keyword",
+                  "description": "Search query string"
+                }
+              ]
+            },
+            "description": "Search across all documents and versions for matching content"
+          },
+          "response": []
+        },
+        {
+          "name": "Search - Multi-word Query",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/search?q=multiple words query",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "multiple words query"
+                }
+              ]
+            },
+            "description": "Search with multiple words (case-insensitive)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Versions",
+      "item": [
+        {
+          "name": "Publish Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "publish"]
+            },
+            "description": "Create a snapshot of the current document and increment version"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Versions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/versions",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "versions"]
+            },
+            "description": "Retrieve all published versions of a document"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/versions/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "versions", "1"]
+            },
+            "description": "Retrieve a specific version of a document"
+          },
+          "response": []
+        },
+        {
+          "name": "Compare Versions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/versions/1/compare/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "versions", "1", "compare", "2"]
+            },
+            "description": "Compare two versions of a document using path-based URL"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Performance Tests",
+      "item": [
+        {
+          "name": "Create Large Document (1MB)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate 1MB of content",
+                  "const size = 1024 * 1024; // 1MB",
+                  "const content = 'A'.repeat(size);",
+                  "pm.variables.set('largeContent', content);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Large Document (1MB)\",\n  \"content\": \"{{largeContent}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            },
+            "description": "Test creating a large 1MB document"
+          },
+          "response": []
+        },
+        {
+          "name": "Batch Insert (100 Changes)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate 100 insert operations",
+                  "const changes = [];",
+                  "for (let i = 0; i < 100; i++) {",
+                  "    changes.push({",
+                  "        operation: 'insert',",
+                  "        range: { start: i * 10, end: i * 10 },",
+                  "        text: `Insert ${i} `",
+                  "    });",
+                  "}",
+                  "pm.variables.set('batchChanges', JSON.stringify(changes));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": {{batchChanges}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            },
+            "description": "Test applying 100 changes in a single batch"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Complete Workflow",
+      "item": [
+        {
+          "name": "1. Create Document",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "pm.collectionVariables.set('documentId', response.id);",
+                  "pm.test('Status code is 201 or 200', function() {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Project Specification\",\n  \"content\": \"# Project Overview\\n\\nInitial content here.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Apply Changes",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": [\n    {\n      \"operation\": \"insert\",\n      \"range\": { \"start\": 100, \"end\": 100 },\n      \"text\": \"\\n\\n## Requirements\\n- Requirement 1\\n- Requirement 2\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Publish Version 1",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "publish"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Make More Edits",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"changes\": [\n    {\n      \"operation\": \"insert\",\n      \"range\": { \"start\": 150, \"end\": 150 },\n      \"text\": \"\\n- Requirement 3\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Publish Version 2",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "publish"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6. Compare Versions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/versions/1/compare/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "versions", "1", "compare", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7. Search Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/search?q=Requirements",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Requirements"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "8. Get All Versions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/versions",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "versions"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
+
+

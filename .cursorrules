@@ -1,0 +1,26 @@
+# Sandstone Project Guidelines
+
+## Code Quality Principles
+
+### No Workarounds
+- **Always implement proper fixes**, not workarounds
+- Don't mask errors with try-catch blocks that hide the root cause
+- Don't skip validation or add "just in case" checks without understanding why
+- If a fix seems hacky, it probably is - find the real solution
+
+### Prefer Simple Solutions
+- Fix the root cause, not the symptoms
+- Keep synchronization logic explicit and understandable
+- Avoid complex state machines when simple state updates will do
+
+### When Debugging
+1. Understand the root cause before coding
+2. Explain the problem clearly before proposing a solution
+3. If asked "is this a workaround?", be honest
+4. Propose the proper fix, even if it takes longer
+
+### Code Changes
+- Clean up temporary fixes once the real solution is implemented
+- Remove dead code and unused variables
+- Update comments to reflect the actual implementation
+

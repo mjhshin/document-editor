@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id        String   @id @default(uuid())
+  content   String
+  version   Int      @default(0)
+  etag      String   @default("")  // ETag for concurrency control
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  changes   Change[]
+  versions  DocumentVersion[] @relation("DocumentVersions")
+}
+
+model Change {
+  id            String   @id @default(uuid())
+  documentId    String
+  text          String   // The text content of the change
+  operation     String   // e.g., "replace", "insert", "delete"
+  rangeStart    Int      // Start position of the range
+  rangeEnd      Int      // End position of the range
+  occurrence    Int?     // Which occurrence to replace (1-based, null = all, -1 = all)
+  contextBefore String?  // Text that should appear before the match
+  contextAfter  String?  // Text that should appear after the match
+  createdAt     DateTime @default(now())
+  
+  document      Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  
+  @@index([documentId])
+}
+
+model DocumentVersion {
+  id          String   @id @default(uuid())
+  documentId  String
+  version     Int
+  content     String
+  publishedAt DateTime @default(now())
+  
+  document    Document @relation("DocumentVersions", fields: [documentId], references: [id], onDelete: Cascade)
+  
+  @@unique([documentId, version])
+  @@index([documentId])
+}
+
