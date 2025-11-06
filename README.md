@@ -364,7 +364,7 @@ GET    /api/documents/:id/versions/:v1/compare/:v2    - Compare versions
 
 ## Tech Stack
 
-**Frontend**: React 18 • TypeScript • Vite • TipTap • Tailwind CSS  
+**Frontend**: React 18 • TypeScript • Vite • React Markdown • Tailwind CSS  
 **Backend**: Node.js • Express • TypeScript • Prisma • SQLite  
 **Testing**: Jest (server) • Vitest (client)
 
