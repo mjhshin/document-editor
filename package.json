@@ -1,8 +1,8 @@
 {
-  "name": "sandstone",
+  "name": "document-editor",
   "version": "1.0.0",
   "private": true,
-  "description": "Sandstone monorepo",
+  "description": "Document Editor monorepo",
   "workspaces": [
     "client",
     "server"

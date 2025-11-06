@@ -1,4 +1,4 @@
-# Sandstone
+# Document Editor
 
 A document editing application with incremental change tracking, versionin and search functionality. Built with TypeScript, React, and Express.
 
@@ -220,7 +220,7 @@ npm test -- applyChanges.performance.test.ts
 
 ### Patch-Based Updates
 
-Sandstone uses operational transformation via PATCH requests rather than full document replacements.
+This application uses operational transformation via PATCH requests rather than full document replacements.
 
 **Why this approach?**
 

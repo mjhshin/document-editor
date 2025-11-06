@@ -1,7 +1,7 @@
 {
-  "name": "@sandstone/server",
+  "name": "@document-editor/server",
   "version": "1.0.0",
-  "description": "Sandstone server",
+  "description": "Document Editor server",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

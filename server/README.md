@@ -1,4 +1,4 @@
-# Sandstone Server
+# Document Editor Server
 
 Express.js backend with TypeScript, Prisma, and SQLite.
 

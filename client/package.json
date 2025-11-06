@@ -1,7 +1,7 @@
 {
-  "name": "@sandstone/client",
+  "name": "@document-editor/client",
   "version": "1.0.0",
-  "description": "Sandstone client",
+  "description": "Document Editor client",
   "type": "module",
   "scripts": {
     "dev": "vite",
